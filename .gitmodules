@@ -1,0 +1,6 @@
+[submodule "rust-by-example"]
+	path = rust-by-example
+	url = https://github.com/ruRust/rust-by-example
+[submodule "async-book"]
+	path = async-book
+	url = https://github.com/ruRust/async-book
