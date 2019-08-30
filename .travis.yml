@@ -15,8 +15,7 @@ addons:
     - rsync
   ssh_known_hosts: newwww.rustycrate.ru
 before_script:
-  - cargo install mdbook --vers '0.3.1' --debug --force
-  - cargo install mdbook-linkcheck --vers '0.3.1' --debug --force
+  - cargo install mdbook --force
   - for dir in *; do
       [ -d "${dir}" ] || continue;
       [ -x "${dir}/scripts/pre-build.sh" ] || continue;
