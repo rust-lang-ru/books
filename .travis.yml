@@ -33,14 +33,13 @@ script:
     done
 after_success:
   - if [ $TRAVIS_PULL_REQUEST == "false" ] && [ $TRAVIS_BRANCH == "master" ]; then
-    export OUT_DIR="${TRAVIS_BUILD_DIR}/out";
     openssl aes-256-cbc -K $encrypted_12c8071d2874_key -iv $encrypted_12c8071d2874_iv
       -in travis.trash.id_ed25519.enc -out travis.trash.id_ed25519 -d;
-    tar -caf .books.tar.gz ${OUT_DIR};
+    tar -caf .books.tar.gz out;
     chmod 600 travis.trash.id_ed25519;
     scp -i travis.trash.id_ed25519 .books.tar.gz "$DEPLOY_USER@$DEPLOY_HOST:";
     ssh -i travis.trash.id_ed25519 -t $DEPLOY_USER@$DEPLOY_HOST "rm -rf out && tar -xaf .books.tar.gz
-      && /home/$DEPLOY_USER/deploy-book.sh";
+      && /home/$DEPLOY_USER/deploy-books.sh";
     fi;
 after_script:
   - if [ -f travis.trash.id_ed25519 ]; then shred -u travis.trash.id_ed25519; fi;
