@@ -1,5 +1,7 @@
 # Books
 
+[![Build Status](https://travis-ci.org/ruRust/books.svg?branch=master)](https://travis-ci.org/ruRust/books)
+
 Метарепозиторий для сборки и деплоя переводов книг.
 
 Здесь собраны переводы книг сообщества: Rust by example, Async book, TRPL и другие.
