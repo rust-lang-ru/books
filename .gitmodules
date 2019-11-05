@@ -4,3 +4,6 @@
 [submodule "async-book"]
 	path = async-book
 	url = https://github.com/rust-lang-ru/async-book
+[submodule "rust-cookbook"]
+	path = rust-cookbook
+	url = https://github.com/rust-lang-ru/rust-cookbook.git
