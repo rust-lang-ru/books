@@ -21,12 +21,12 @@
 в оригинале и "ru" на "org" в переводе, мы получаем в первом случае перевод, а во втором - оригинал.
 
 Если вы нашли какую-либо ошибку в книге, отпишитесь в репозитории соответствующего перевода. Если вы
-нашли несоответствие в структуре деплоя, создайте [issue в этом репозитории](https://github.com/ruRust/books/issues/new)
+нашли несоответствие в структуре деплоя, создайте [issue в этом репозитории](https://github.com/rust-lang-ru/books/issues/new)
 
 ## Переводы книг и где они обитают
 
 | Название | Ссылка | Репозиторий |
 |---|---|---|
-| Rust by example | https://doc.rust-lang.ru/stable/rust-by-example | https://github.com/ruRust/rust-by-example |
-| Async book | https://doc.rust-lang.ru/async-book | https://github.com/ruRust/async-book |
-
+| Rust by example | https://doc.rust-lang.ru/stable/rust-by-example | https://github.com/rust-lang-ru/rust-by-example |
+| Async book | https://doc.rust-lang.ru/async-book | https://github.com/rust-lang-ru/async-book |
+| Rust Cookbook | | https://github.com/rust-lang-ru/rust-cookbook |
