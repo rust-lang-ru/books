@@ -7,3 +7,6 @@
 [submodule "rust-cookbook"]
 	path = rust-cookbook
 	url = https://github.com/rust-lang-ru/rust-cookbook.git
+[submodule "book"]
+	path = book
+	url = https://github.com/rust-lang-ru/book.git
