@@ -42,3 +42,8 @@ jobs:
             mdbook build -d "${OUT_DIR}/${dir}" .;
           popd;
         done
+
+    - uses: actions/upload-artifact@v2
+      with:
+        name: books
+        path: "${OUT_DIR}"
