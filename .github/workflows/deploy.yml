@@ -1,0 +1,46 @@
+name: "Deploy books"
+on:
+  push:
+    branches:
+      - master
+  workflow_dispatch:
+  pull_request:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    concurrency:
+      group: ${{ github.workflow }}-${{ github.ref }}
+    env:
+      OUT_DIR: "${{ github.workspace }}/out"
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Prepare books
+      run: |
+        for dir in *; do
+          [ -d "${dir}" ] || continue;
+          [ -x "${dir}/scripts/pre-build.sh" ] || continue;
+          bash "${dir}/scripts/pre-build.sh";
+        done
+    - name: Create out dir
+      run: mkdir -p $OUT_DIR
+
+    - name: Setup mdBook
+      uses: peaceiris/actions-mdbook@v1
+      with:
+        mdbook-version: '0.4.10'
+
+    - name: Build books
+      run: |
+        for dir in *; do;
+          [ -d "${dir}" ] || continue;
+          [ -d "${dir}/${dir}-ru" ] || continue;
+          pushd "${dir}/${dir}-ru";
+            mdbook build -d "${OUT_DIR}/${dir}" .;
+          popd;
+        done;
+
+
+
+
