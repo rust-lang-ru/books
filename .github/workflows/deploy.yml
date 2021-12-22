@@ -40,11 +40,10 @@ jobs:
           [ -d "${dir}/${dir}-ru" ] || continue;
           pushd "${dir}/${dir}-ru";
             mdbook build -d "${OUT_DIR}/${dir}" .;
-            ls "${OUT_DIR}/${dir}";
           popd;
         done
 
     - uses: actions/upload-artifact@v2
       with:
         name: books
-        path: "${OUT_DIR}"
+        path: "${{ env.OUT_DIR }}"
