@@ -1,4 +1,5 @@
 name: "Deploy books"
+
 on:
   push:
     branches:
@@ -6,13 +7,14 @@ on:
   workflow_dispatch:
   pull_request:
 
+env:
+  OUT_DIR: "${{ github.workspace }}/out"
+
 jobs:
   build:
     runs-on: ubuntu-latest
     concurrency:
       group: ${{ github.workflow }}-${{ github.ref }}
-    env:
-      OUT_DIR: "${{ github.workspace }}/out"
     steps:
     - uses: actions/checkout@v2
       with:
@@ -50,36 +52,39 @@ jobs:
 
   deploy:
     needs: build
-      #    if: ${{ github.ref == 'refs/heads/master' }}
+    # if: ${{ github.ref == 'refs/heads/master' }}
     runs-on: ubuntu-latest
     environment: production
     steps:
     - uses: actions/download-artifact@v2
       with:
         name: books-${{ github.sha }}
+        path: ${{ env.OUT_DIR }}
+    - name: DEBUG
+      run: ls -la ${{ env.OUT_DIR }}
 
-    - name: Install key
-      uses: shimataro/ssh-key-action@v2
-      with:
-        key: ${{ secrets.SSH_PRIVATE_KEY }}
-        known_hosts: "dump"
+    # - name: Install key
+    #   uses: shimataro/ssh-key-action@v2
+    #   with:
+    #     key: ${{ secrets.SSH_PRIVATE_KEY }}
+    #     known_hosts: "dump"
 
-    - name: Adding Known Hosts
-      run: ssh-keyscan -H ${{ secrets.DEPLOY_HOST }} >> ~/.ssh/known_hosts
+    # - name: Adding Known Hosts
+    #   run: ssh-keyscan -H ${{ secrets.DEPLOY_HOST }} >> ~/.ssh/known_hosts
 
-    - name: Packing books
-      run: tar -caf .books.tar.gz out
+    # - name: Packing books
+    #   run: tar -caf .books.tar.gz out
 
-    - name: Upload to server
-      run: scp .books.tar.gz "${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }}:"
+    # - name: Upload to server
+    #   run: scp .books.tar.gz "${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }}:"
 
-    - name: executing remote ssh commands using ssh key
-      uses: appleboy/ssh-action@master
-      with:
-        host: ${{ secrets.DEPLOY_HOST }}
-        username: ${{ secrets.DEPLOY_USER }}
-        key: ${{ secrets.SSH_PRIVATE_KEY }}
-        script: |
-          rm -rf out
-          tar -xaf .books.tar.gz
-          /home/${{ secrets.DEPLOY_USER }}/deploy-books.sh
+    # - name: executing remote ssh commands using ssh key
+    #   uses: appleboy/ssh-action@master
+    #   with:
+    #     host: ${{ secrets.DEPLOY_HOST }}
+    #     username: ${{ secrets.DEPLOY_USER }}
+    #     key: ${{ secrets.SSH_PRIVATE_KEY }}
+    #     script: |
+    #       rm -rf out
+    #       tar -xaf .books.tar.gz
+    #       /home/${{ secrets.DEPLOY_USER }}/deploy-books.sh
