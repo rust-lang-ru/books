@@ -76,13 +76,13 @@ jobs:
     - name: Upload to server
       run: scp .books.tar.gz "${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }}:"
 
-    # - name: executing remote ssh commands using ssh key
-    #   uses: appleboy/ssh-action@master
-    #   with:
-    #     host: ${{ secrets.DEPLOY_HOST }}
-    #     username: ${{ secrets.DEPLOY_USER }}
-    #     key: ${{ secrets.SSH_PRIVATE_KEY }}
-    #     script: |
-    #       rm -rf out
-    #       tar -xaf .books.tar.gz
-    #       /home/${{ secrets.DEPLOY_USER }}/deploy-books.sh
+    - name: executing remote ssh commands using ssh key
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.DEPLOY_HOST }}
+        username: ${{ secrets.DEPLOY_USER }}
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        script: |
+          rm -rf out
+          tar -xaf .books.tar.gz
+          /home/${{ secrets.DEPLOY_USER }}/deploy-books.sh
