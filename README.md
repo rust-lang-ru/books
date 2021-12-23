@@ -27,6 +27,7 @@
 
 | Название | Ссылка | Репозиторий |
 |---|---|---|
+| The Rust Programmin Language | https://doc.rust-lang.ru/book | https://github.com/rust-lang-ru/book |
 | Rust by example | https://doc.rust-lang.ru/stable/rust-by-example | https://github.com/rust-lang-ru/rust-by-example |
 | Async book | https://doc.rust-lang.ru/async-book | https://github.com/rust-lang-ru/async-book |
 | Rust Cookbook | https://doc.rust-lang.ru/rust-cookbook | https://github.com/rust-lang-ru/rust-cookbook |
