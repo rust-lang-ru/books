@@ -60,23 +60,21 @@ jobs:
       with:
         name: books-${{ github.sha }}
         path: ${{ env.OUT_DIR }}
-    - name: DEBUG
-      run: ls -la ${{ env.OUT_DIR }}
 
-    # - name: Install key
-    #   uses: shimataro/ssh-key-action@v2
-    #   with:
-    #     key: ${{ secrets.SSH_PRIVATE_KEY }}
-    #     known_hosts: "dump"
+    - name: Install key
+      uses: shimataro/ssh-key-action@v2
+      with:
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        known_hosts: "dump"
 
-    # - name: Adding Known Hosts
-    #   run: ssh-keyscan -H ${{ secrets.DEPLOY_HOST }} >> ~/.ssh/known_hosts
+    - name: Adding Known Hosts
+      run: ssh-keyscan -H ${{ secrets.DEPLOY_HOST }} >> ~/.ssh/known_hosts
 
-    # - name: Packing books
-    #   run: tar -caf .books.tar.gz out
+    - name: Packing books
+      run: tar -caf .books.tar.gz -C ${{ github.workspace }} out
 
-    # - name: Upload to server
-    #   run: scp .books.tar.gz "${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }}:"
+    - name: Upload to server
+      run: scp .books.tar.gz "${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }}:"
 
     # - name: executing remote ssh commands using ssh key
     #   uses: appleboy/ssh-action@master
