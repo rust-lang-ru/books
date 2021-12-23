@@ -1,7 +1,5 @@
 # Books
 
-[![Build Status](https://travis-ci.org/rust-lang-ru/books.svg?branch=master)](https://travis-ci.org/rust-lang-ru/books)
-
 Метарепозиторий для сборки и деплоя переводов книг.
 
 Здесь собраны переводы книг сообщества: Rust by example, Async book, TRPL и другие.
@@ -27,6 +25,7 @@
 
 | Название | Ссылка | Репозиторий |
 |---|---|---|
+| The Rust Programmin Language | https://doc.rust-lang.ru/book | https://github.com/rust-lang-ru/book |
 | Rust by example | https://doc.rust-lang.ru/stable/rust-by-example | https://github.com/rust-lang-ru/rust-by-example |
 | Async book | https://doc.rust-lang.ru/async-book | https://github.com/rust-lang-ru/async-book |
 | Rust Cookbook | https://doc.rust-lang.ru/rust-cookbook | https://github.com/rust-lang-ru/rust-cookbook |
