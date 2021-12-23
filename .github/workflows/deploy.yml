@@ -1,0 +1,88 @@
+name: "Deploy books"
+
+on:
+  push:
+    branches:
+      - master
+  workflow_dispatch:
+  pull_request:
+
+env:
+  OUT_DIR: "${{ github.workspace }}/out"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    concurrency:
+      group: ${{ github.workflow }}-${{ github.ref }}
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        submodules: recursive
+
+    - name: Prepare books
+      run: |
+        for dir in *; do
+          [ -d "${dir}" ] || continue;
+          [ -x "${dir}/scripts/pre-build.sh" ] || continue;
+          bash "${dir}/scripts/pre-build.sh";
+        done
+    - name: Create out dir
+      run: mkdir -p $OUT_DIR
+
+    - name: Setup mdBook
+      uses: peaceiris/actions-mdbook@v1
+      with:
+        mdbook-version: '0.4.10'
+
+    - name: Build books
+      run: |
+        for dir in *; do
+          [ -d "${dir}" ] || continue;
+          [ -d "${dir}/${dir}-ru" ] || continue;
+          pushd "${dir}/${dir}-ru";
+            mdbook build -d "${OUT_DIR}/${dir}" .;
+          popd;
+        done
+
+    - uses: actions/upload-artifact@v2
+      with:
+        name: books-${{ github.sha }}
+        path: "${{ env.OUT_DIR }}"
+
+  deploy:
+    needs: build
+    if: ${{ github.ref == 'refs/heads/master' }}
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+    - uses: actions/download-artifact@v2
+      with:
+        name: books-${{ github.sha }}
+        path: ${{ env.OUT_DIR }}
+
+    - name: Install key
+      uses: shimataro/ssh-key-action@v2
+      with:
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        known_hosts: "dump"
+
+    - name: Adding Known Hosts
+      run: ssh-keyscan -H ${{ secrets.DEPLOY_HOST }} >> ~/.ssh/known_hosts
+
+    - name: Packing books
+      run: tar -caf .books.tar.gz -C ${{ github.workspace }} out
+
+    - name: Upload to server
+      run: scp .books.tar.gz "${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }}:"
+
+    - name: executing remote ssh commands using ssh key
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.DEPLOY_HOST }}
+        username: ${{ secrets.DEPLOY_USER }}
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        script: |
+          rm -rf out
+          tar -xaf .books.tar.gz
+          /home/${{ secrets.DEPLOY_USER }}/deploy-books.sh
