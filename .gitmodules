@@ -10,3 +10,6 @@
 [submodule "book"]
 	path = book
 	url = https://github.com/rust-lang-ru/book.git
+[submodule "nomicon"]
+	path = nomicon
+	url = https://github.com/rust-lang-ru/nomicon
