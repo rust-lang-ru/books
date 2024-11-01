@@ -45,7 +45,7 @@ jobs:
           popd;
         done
 
-    - uses: actions/upload-artifact@v2
+    - uses: actions/upload-artifact@v4
       with:
         name: books-${{ github.sha }}
         path: "${{ env.OUT_DIR }}"
@@ -56,7 +56,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: production
     steps:
-    - uses: actions/download-artifact@v2
+    - uses: actions/download-artifact@v4
       with:
         name: books-${{ github.sha }}
         path: ${{ env.OUT_DIR }}
